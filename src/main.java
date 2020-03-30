@@ -200,14 +200,17 @@ public class main {
             } else {
                 if (plus.contains(xSrech[i - 1])) {
                     zamre = zamre + Float.parseFloat(xSrech[i]);
-                } else if (minus.contains(xSrech[i - 1])) {
+                }
+
+                if (minus.contains(xSrech[i - 1])) {
                     zamre = zamre - Float.parseFloat(xSrech[i]);
                 }
-                System.out.println(zamre);
 
                 if (mult.contains(xSrech[i - 1])) {
                     zamre = zamre * Float.parseFloat(xSrech[i]);
-                } else {
+                }
+
+                if (div.contains(xSrech[i - 1])) {
                     zamre = zamre / Float.parseFloat(xSrech[i]);
                 }
                 i++;
