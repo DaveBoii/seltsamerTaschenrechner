@@ -1,10 +1,8 @@
-import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class main {
 
-    static char[] xCrechnung = new char[100];
+    static TextHandle handle;
     static String[] xSrech = new String[100];
     static String rechnung;
 
@@ -12,8 +10,8 @@ public class main {
         Scanner sc = new Scanner(System.in);
         rechnung = sc.nextLine();
 
-        xCrechnung = rechnung.toCharArray();
-
+        handle = new TextHandle(rechnung);
+        
         // <dave> check if the calculation is valid
         main.validation();
 
@@ -48,19 +46,19 @@ public class main {
 
         // <dave> check if there is any incorrect syntax
         for (int i = 0; i < rechnung.length(); i++) {
-            if (cs && calcstuff.indexOf(xCrechnung[i]) != -1) {
+            if (cs && calcstuff.indexOf(handle.get(i)) != -1) {
                 main.invalid();
             }
-            if (ms && calcstuff.indexOf(xCrechnung[i]) != -1) {
+            if (ms && calcstuff.indexOf(handle.get(i)) != -1) {
                 main.invalid();
             }
-            if (cs && mathsigns.indexOf(xCrechnung[i]) != -1) {
+            if (cs && mathsigns.indexOf(handle.get(i)) != -1) {
                 main.invalid();
             }
-            if (ms && mathsigns.indexOf(xCrechnung[i]) != -1) {
+            if (ms && mathsigns.indexOf(handle.get(i)) != -1) {
                 main.invalid();
             }
-            if (calcstuff.indexOf(xCrechnung[i]) != -1) {
+            if (calcstuff.indexOf(handle.get(i)) != -1) {
                 if (i != 0 && i != last) {
                     cs = true;
                 } else {
@@ -69,7 +67,7 @@ public class main {
             } else {
                 cs = false;
             }
-            if (mathsigns.indexOf(xCrechnung[i]) != -1) {
+            if (mathsigns.indexOf(handle.get(i)) != -1) {
                 // <dave> let the program know a math sign exists
                 if (!msaa) {
                     msaa = true;
@@ -155,16 +153,16 @@ public class main {
         String clingclose = ")";
         int count = 0;
 
-        for (int i = 0; i < rechnung.length(); i++) {
+        for (int i = 0; i < handle.lenght; i++) {
 
             // <dave> if a char is cling
-            if (clingopen.indexOf(xCrechnung[i]) != -1) {
+            if (clingopen.indexOf(handle.get(i)) != -1) {
                 i++;
-                while (clingclose.indexOf(xCrechnung[i]) == -1) {
+                while (clingclose.indexOf(handle.get(i)) == -1) {
                     if (xSrech[count] == null) {
                         xSrech[count] = "";
                     }
-                    xSrech[count] = xSrech[count] + xCrechnung[i];
+                    xSrech[count] = xSrech[count] + handle.get(i);
                     i++;
                 }
                 count++;
@@ -172,16 +170,16 @@ public class main {
                 i++;
             }
 
-            if (math.indexOf(xCrechnung[i]) != -1) {
+            if (math.indexOf(handle.get(i)) != -1) {
                 count++;
-                xSrech[count] = "" + xCrechnung[i];
+                xSrech[count] = "" + handle.get(i);
                 count++;
                 xSrech[count] = "";
             } else {
                 if (xSrech[count] == null) {
                     xSrech[count] = "";
                 }
-                xSrech[count] = xSrech[count] + xCrechnung[i];
+                xSrech[count] = xSrech[count] + handle.get(i);
             }
         }
     }
