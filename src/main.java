@@ -204,6 +204,7 @@ public class main {
                     zamre = zamre - Float.parseFloat(xSrech[i]);
                 }
                 System.out.println(zamre);
+
                 if (mult.contains(xSrech[i - 1])) {
                     zamre = zamre * Float.parseFloat(xSrech[i]);
                 } else {
