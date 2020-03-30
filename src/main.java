@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class main {
@@ -9,6 +11,7 @@ public class main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         rechnung = sc.nextLine();
+        sc.close();
 
         handle = new TextHandle(rechnung);
         
@@ -16,8 +19,8 @@ public class main {
         main.validation();
 
         // <dave> get the char Array into a String Array
-        main.charBackToString();
-
+//        main.charBackToString();
+        xSrech = charBackToString(handle);
         // <dave> start calculating
         main.smash();
     }
@@ -147,41 +150,41 @@ public class main {
         }
     }
 
-    public static void charBackToString() {
+    public static String[] charBackToString(TextHandle inputHandle) {
         String math = "+-*/";
         String clingopen = "(";
         String clingclose = ")";
-        int count = 0;
 
-        for (int i = 0; i < handle.lenght; i++) {
+        List<String> list = new ArrayList<>();
+        String current = "";
+
+        for (int i = 0; i < inputHandle.lenght; i++) {
 
             // <dave> if a char is cling
-            if (clingopen.indexOf(handle.get(i)) != -1) {
+            if (clingopen.indexOf(inputHandle.get(i)) != -1) {
                 i++;
-                while (clingclose.indexOf(handle.get(i)) == -1) {
-                    if (xSrech[count] == null) {
-                        xSrech[count] = "";
-                    }
-                    xSrech[count] = xSrech[count] + handle.get(i);
+                while (clingclose.indexOf(inputHandle.get(i)) == -1) {
+                    current = current + inputHandle.get(i);
                     i++;
                 }
-                count++;
-                xSrech[count] = "";
+                list.add(current);
+                current = "";
                 i++;
             }
 
-            if (math.indexOf(handle.get(i)) != -1) {
-                count++;
-                xSrech[count] = "" + handle.get(i);
-                count++;
-                xSrech[count] = "";
+            if (math.indexOf(inputHandle.get(i)) != -1) {
+                list.add(current);
+                list.add("" + inputHandle.get(i));
+                current = "";
             } else {
-                if (xSrech[count] == null) {
-                    xSrech[count] = "";
-                }
-                xSrech[count] = xSrech[count] + handle.get(i);
+                current = current + inputHandle.get(i);
             }
         }
+
+        list.add(current);
+        String[] output = new String[list.size()];
+        list.toArray(output);
+        return output;
     }
 
     public static void wholeRech() {
@@ -191,7 +194,7 @@ public class main {
         String mult = "*";
         float zamre = 0;
 
-        for (int i = 0; xSrech[i] != null; i++) {
+        for (int i = 0; i < xSrech.length; i++) {
             if (i == 0) {
                 zamre = Float.parseFloat(xSrech[i]);
                 i++;
