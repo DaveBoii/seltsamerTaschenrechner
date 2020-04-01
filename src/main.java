@@ -5,8 +5,10 @@ import java.util.Scanner;
 public class main {
 
     static TextHandle handle;
-    static String[] xSrech = new String[100];
+    static String[] xSrech;
     static String rechnung;
+    static float zamre = 0;
+    static float interim;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -14,12 +16,12 @@ public class main {
         sc.close();
 
         handle = new TextHandle(rechnung);
-        
+
         // <dave> check if the calculation is valid
         main.validation();
 
         // <dave> get the char Array into a String Array
-//        main.charBackToString();
+        // main.charBackToString();
         xSrech = charBackToString(handle);
         // <dave> start calculating
         main.smash();
@@ -119,7 +121,6 @@ public class main {
     public static void plusmine() {
         String minus = "-";
         String plus = "+";
-        float zamre = 0;
 
         for (int i = 0; xSrech[i] != null; i++) {
             if (i == 0) {
@@ -192,7 +193,6 @@ public class main {
         String plus = "+";
         String div = "/";
         String mult = "*";
-        float zamre = 0;
 
         for (int i = 0; i < xSrech.length; i++) {
             if (i == 0) {
@@ -200,11 +200,29 @@ public class main {
                 i++;
             } else {
                 if (plus.contains(xSrech[i - 1])) {
-                    zamre = zamre + Float.parseFloat(xSrech[i]);
+                    interim = 0;
+                    i = main.checkForPoint(i);
+                    if (interim == 0) {
+                        zamre = zamre + Float.parseFloat(xSrech[i]);
+                    } else {
+                        zamre = zamre + interim;
+                        if (i == xSrech.length - 1) {
+                            break;
+                        }
+                    }
                 }
 
                 if (minus.contains(xSrech[i - 1])) {
-                    zamre = zamre - Float.parseFloat(xSrech[i]);
+                    interim = 0;
+                    i = main.checkForPoint(i);
+                    if (interim == 0) {
+                        zamre = zamre - Float.parseFloat(xSrech[i]);
+                    } else {
+                        zamre = zamre - interim;
+                        if (i == xSrech.length - 1) {
+                            break;
+                        }
+                    }
                 }
 
                 if (mult.contains(xSrech[i - 1])) {
@@ -233,5 +251,26 @@ public class main {
             }
         }
 
+    }
+
+    public static int checkForPoint(int i) {
+        String div = "/";
+        String mult = "*";
+        interim = Float.parseFloat(xSrech[i]);
+
+        // <dave> check in loop, if there is any * or / calculation, which needs to be done, before continue with +/-
+        for (int j = i + 2; j != xSrech.length; j++) {
+            if (xSrech[i + 1].equals("*") || xSrech[i + 1].equals("/")) {
+                i = i + 2;
+                if (mult.contains(xSrech[i - 1])) {
+                    interim = interim * Float.parseFloat(xSrech[i]);
+                }
+
+                if (div.contains(xSrech[i - 1])) {
+                    interim = interim / Float.parseFloat(xSrech[i]);
+                }
+            }
+        }
+        return i;
     }
 }
